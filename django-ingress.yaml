@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: django
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: django-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: django.example.com
+    http:
+      paths:
+      - path: /home
+        backend:
+          serviceName: home-svc
+          servicePort: 80
+      - path: /page
+        backend:
+          serviceName: page-svc
+          servicePort: 80
+
+--- 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home
+  namespace: django
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: home
+  template:
+    metadata:
+      labels:
+        app: home
+    spec:
+      containers:
+      - name: home
+        image: ndrohith09/django-ingress
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-svc
+  namespace: django
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: home
+
+--- 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: page
+  namespace: django
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: page
+  template:
+    metadata:
+      labels:
+        app: page
+    spec:
+      containers:
+      - name: page
+        image: ndrohith09/django-ingress
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: page-svc
+  namespace: django
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: page

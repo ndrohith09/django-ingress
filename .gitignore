@@ -1,0 +1,5 @@
+app/__pycache__
+app/migrations
+djangokubernetesproject/__pycache__
+venv/
+deployments/
