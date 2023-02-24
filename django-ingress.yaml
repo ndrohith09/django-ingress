@@ -19,11 +19,11 @@ spec:
       - path: /home
         backend:
           serviceName: home-svc
-          servicePort: 80
+          servicePort: 8000
       - path: /page
         backend:
           serviceName: page-svc
-          servicePort: 80
+          servicePort: 8000
 
 --- 
 
@@ -46,7 +46,7 @@ spec:
       - name: home
         image: ndrohith09/django-ingress
         ports:
-        - containerPort: 80
+        - containerPort: 8000
 
 ---
 
@@ -57,8 +57,8 @@ metadata:
   namespace: django
 spec:
   ports:
-  - port: 80
-    targetPort: 80
+  - port: 8000
+    targetPort: 8000
     protocol: TCP
     name: http
   selector:
@@ -85,7 +85,7 @@ spec:
       - name: page
         image: ndrohith09/django-ingress
         ports:
-        - containerPort: 80
+        - containerPort: 8000
 
 ---
 
@@ -96,8 +96,8 @@ metadata:
   namespace: django
 spec:
   ports:
-  - port: 80
-    targetPort: 80
+  - port: 8000
+    targetPort: 8000
     protocol: TCP
     name: http
   selector:
